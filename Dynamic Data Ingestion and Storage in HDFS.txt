@@ -1,0 +1,36 @@
+sudo su
+nano com_data.csv
+
+emp_id,name,department,salary
+101,Alice,Engineering,75000
+102,Ramesh,Marketing,60000
+103,Charlie,Finance,72000
+104,David,Engineering,80000
+105,James,Engineering,90000
+106,Richard,Marketing,10000
+#Upload to hdfs
+hadoop fs -mkdir -p /rohith/cloudera/datapro
+hadoop fs -put com_data.csv /rohith/cloudera/datapro/
+hadoop fs -ls /rohith/cloudera/datapro/
+#open hive
+hive
+#create db,table
+CREATE DATABASE detest;
+USE detest;
+CREATE TABLE dedata (
+emp_id INT,
+name STRING,
+department STRING,
+salary INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+TBLPROPERTIES ("skip.header.line.count"="1");
+#Load data
+LOAD DATA INPATH '/rohith/cloudera/datapro/com_data.csv' INTO TABLE dedata;
+#query
+SELECT * FROM dedata;
+
+
+
